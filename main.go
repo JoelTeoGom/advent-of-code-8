@@ -24,42 +24,35 @@ func readMap(m *map[string]Map, command *string, filename string) {
 
 	if scanner.Scan() {
 		*command = scanner.Text()
-		fmt.Println(*command)
+		// fmt.Println(*command)
 	}
 
 	for scanner.Scan() {
 		line := scanner.Text()
-		//fmt.Println(line)
+		// fmt.Println(line)
 		lines := make([]string, 0)
-		for i, char := range line {
-			fmt.Printf("[%d]: %s\n", i, string(char))
+		for _, char := range line {
+			// fmt.Printf("[%d]: %s\n", i, string(char))
 			lines = append(lines, string(char))
 		}
 
-		key := make([]string, 0)   // Inicializa key
-		right := make([]string, 0) // Inicializa right
-		left := make([]string, 0)  // Inicializa left
+		// Initialize slices with capacity for 3 elements
+		key := make([]string, 0, 3)
+		left := make([]string, 0, 3)
+		right := make([]string, 0, 3)
 
 		var leftString, rightString, keyString string
-		// verify to avoid PANIQUING
+		// Verify to avoid panicking
 		if len(lines) >= 16 {
-			key = append(key, lines[0])
-			key = append(key, lines[1])
-			key = append(key, lines[2])
 
-			left = append(left, lines[7])
-			left = append(left, lines[8])
-			left = append(left, lines[9])
+			key = append(key, lines[0], lines[1], lines[2])
+			left = append(left, lines[7], lines[8], lines[9])
+			right = append(right, lines[12], lines[13], lines[14])
 
-			right = append(right, lines[12])
-			right = append(right, lines[13])
-			right = append(right, lines[14])
-
-			// Convertir slices a strings
-			leftString = strings.Join(left, "") // Usando ", " como separador
+			// Convert slices to strings
+			leftString = strings.Join(left, "") // Using ", " as a separator
 			rightString = strings.Join(right, "")
 			keyString = strings.Join(key, "")
-
 		}
 
 		if len(key) > 0 && len(left) > 0 && len(right) > 0 {
@@ -74,15 +67,41 @@ func readMap(m *map[string]Map, command *string, filename string) {
 
 }
 
+func resolvePuzzle(m *map[string]Map, command *string) int {
+	var endBool bool = true
+	currentKey := "AAA"
+	index := 0
+
+	for endBool {
+		for _, char := range *command {
+			fmt.Println(currentKey)
+
+			if currentKey == "ZZZ" {
+				endBool = false
+				break
+			}
+			if string(char) == "L" {
+				currentKey = (*m)[currentKey].Left
+			} else {
+				currentKey = (*m)[currentKey].Right
+			}
+			index++
+			fmt.Printf("| [%d] \n", index)
+		}
+	}
+	return index
+}
+
 func main() {
 
 	var command string
 	m := make(map[string]Map)
 
 	readMap(&m, &command, "map.txt")
-	// Imprimir el mapa
-	for k, v := range m {
-		fmt.Printf("Clave: %s, Left: %v, Right: %v\n", k, v.Left, v.Right)
-	}
 
+	/*for k, v := range m {
+		fmt.Printf("Key: %s, Left: %v, Right: %v\n", k, v.Left, v.Right)
+	}*/
+	index := resolvePuzzle(&m, &command)
+	println("Index: ", index)
 }
