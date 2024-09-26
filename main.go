@@ -5,6 +5,7 @@ import (
 	"fmt"
 	"os"
 	"strings"
+	"time"
 )
 
 type Map struct {
@@ -98,17 +99,76 @@ func resolvePuzzle(m *map[string]Map, command *string) int {
 	return index
 }
 
-func resolvePuzzlePart2(m *map[string]Map, command *string) int {
-
-}
-
 func day8part1() {
 	var command string
 	m := make(map[string]Map)
 	readMap(&m, &command, "map.txt")
 	index := resolvePuzzle(&m, &command)
 	println("Index: ", index)
-	printMap(&m)
+}
+
+////////////////////////////////////////////////////////////////////////
+//							  PART 2								 //
+///////////////////////////////////////////////////////////////////////
+
+func resolvePuzzlePart2(m *map[string]Map, command *string) int {
+
+	startKey := make([]string, 0, 3)
+	endKey := make([]string, 0, 3)
+	var endBool bool = false
+	index := 0
+
+	//START POINT
+	for key := range *m {
+		if strings.HasSuffix(key, "A") { //ENDS WITH A
+			startKey = append(startKey, key)
+		}
+	}
+
+	for key := range *m {
+		if strings.HasSuffix(key, "Z") { //ENDS WITH A
+			endKey = append(endKey, key)
+		}
+	}
+
+	fmt.Println(startKey)
+	fmt.Println(endKey)
+	time.Sleep(10 * time.Second)
+
+	//start puzzle
+	for !endBool {
+		for _, char := range *command {
+			fmt.Println("", startKey)
+			tempBool := true
+			for _, currentKey := range startKey {
+				if !strings.HasSuffix(currentKey, "Z") {
+					tempBool = false
+				}
+			}
+			time.Sleep(1 * time.Second)
+			endBool = tempBool
+
+			if endBool {
+				break
+			}
+
+			if string(char) == "L" {
+				for i := 0; i < len(startKey); i++ {
+					startKey[i] = (*m)[startKey[i]].Left
+				}
+
+			} else {
+				for i := 0; i < len(startKey); i++ {
+					startKey[i] = (*m)[startKey[i]].Right
+				}
+			}
+
+			index++
+			fmt.Printf("| [%d]: %c \n", index, char)
+		}
+	}
+	return index
+
 }
 
 func day8part2() {
@@ -120,7 +180,7 @@ func day8part2() {
 }
 
 func main() {
-	day8part1()
-	//day8part2()
+	//day8part1()
+	day8part2()
 
 }
