@@ -92,7 +92,11 @@ func resolvePuzzle(m *map[string]Map, command *string) int {
 	return index
 }
 
-func main() {
+func resolvePuzzlePart2(m *map[string]Map, command *string) int {
+
+}
+
+func day8part1() {
 
 	var command string
 	m := make(map[string]Map)
@@ -104,4 +108,18 @@ func main() {
 	}*/
 	index := resolvePuzzle(&m, &command)
 	println("Index: ", index)
+}
+
+func day8part2() {
+	var command string
+	m := make(map[string]Map)
+
+	readMap(&m, &command, "map.txt")
+
+}
+
+func main() {
+	//day8part1()
+	day8part2()
+
 }
