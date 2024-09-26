@@ -11,6 +11,12 @@ type Map struct {
 	Right, Left string
 }
 
+func printMap(m *map[string]Map) {
+	for k, v := range *m {
+		fmt.Printf("Key: %s, Left: %v, Right: %v\n", k, v.Left, v.Right)
+	}
+}
+
 func readMap(m *map[string]Map, command *string, filename string) {
 
 	file, err := os.Open(filename)
@@ -97,29 +103,24 @@ func resolvePuzzlePart2(m *map[string]Map, command *string) int {
 }
 
 func day8part1() {
-
 	var command string
 	m := make(map[string]Map)
-
 	readMap(&m, &command, "map.txt")
-
-	/*for k, v := range m {
-		fmt.Printf("Key: %s, Left: %v, Right: %v\n", k, v.Left, v.Right)
-	}*/
 	index := resolvePuzzle(&m, &command)
 	println("Index: ", index)
+	printMap(&m)
 }
 
 func day8part2() {
 	var command string
 	m := make(map[string]Map)
-
 	readMap(&m, &command, "map.txt")
-
+	index := resolvePuzzlePart2(&m, &command)
+	println("Index: ", index)
 }
 
 func main() {
-	//day8part1()
-	day8part2()
+	day8part1()
+	//day8part2()
 
 }
