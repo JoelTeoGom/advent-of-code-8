@@ -133,19 +133,21 @@ func resolvePuzzlePart2(m *map[string]Map, command *string) int {
 
 	fmt.Println(startKey)
 	fmt.Println(endKey)
-	time.Sleep(10 * time.Second)
+	time.Sleep(2 * time.Second)
 
 	//start puzzle
 	for !endBool {
 		for _, char := range *command {
-			fmt.Println("", startKey)
+			//fmt.Println("", startKey)
 			tempBool := true
 			for _, currentKey := range startKey {
 				if !strings.HasSuffix(currentKey, "Z") {
 					tempBool = false
+				} else {
+					println("contains Z: ", currentKey, index)
 				}
 			}
-			time.Sleep(1 * time.Second)
+			//time.Sleep(1 * time.Second)
 			endBool = tempBool
 
 			if endBool {
@@ -164,7 +166,7 @@ func resolvePuzzlePart2(m *map[string]Map, command *string) int {
 			}
 
 			index++
-			fmt.Printf("| [%d]: %c \n", index, char)
+			//fmt.Printf("| [%d]: %c \n", index, char)
 		}
 	}
 	return index
@@ -180,7 +182,6 @@ func day8part2() {
 }
 
 func main() {
-	//day8part1()
+	day8part1()
 	day8part2()
-
 }
